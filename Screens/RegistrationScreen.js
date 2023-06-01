@@ -7,6 +7,9 @@ export default function RegistrationScreen() {
 
     const [focus, setFocus] = useState('')
     const [keyboardStatus, setKeyboardStatus] = useState(false);
+    const [login, setLogin] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
     useEffect(() => {
       const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -30,6 +33,10 @@ export default function RegistrationScreen() {
         setFocus('')
     }
 
+    const handleSubmit =()=> {
+        const userData = { login, email, password }
+        console.log(userData)
+    }
 
     return <View style={styles.container}>
         <View style={styles.avatar}>
@@ -41,15 +48,25 @@ export default function RegistrationScreen() {
             <View style={styles.elseContainer}>
                 <TextInput style={focus === "login" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
                     name="login" placeholder='Логін'
+                    value={login}
+                    onChangeText={setLogin}
                     onBlur={ () => onBlur() }
                     onFocus={ (e) => onFocus(e) }
                     />
-                <TextInput style={focus === "email" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} name="email" placeholder='Адреса електронної пошти'
+                <TextInput style={focus === "email" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
+                    name="email" 
+                    placeholder='Адреса електронної пошти'
+                    value={email}
+                    onChangeText={setEmail}
                     onBlur={ () => onBlur() }
                     onFocus={ (e) => onFocus(e) }
                                             />
                 <View>
-                    <TextInput style={focus === "password" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} name="password" placeholder='Пароль'
+                    <TextInput style={focus === "password" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
+                        name="password" 
+                        placeholder='Пароль'
+                        value={password}
+                        onChangeText={setPassword}
                         onBlur={ () => onBlur() }
                         onFocus={ (e) => onFocus(e) }
                                                 />
@@ -59,7 +76,7 @@ export default function RegistrationScreen() {
                 </View>
             </View>
             {!keyboardStatus && <View style={styles.elseContainer}>
-                <Pressable style={styles.regButton}>
+                <Pressable style={styles.regButton} onPress={handleSubmit}>
                     <Text style={styles.textButton} >Зареєстуватися</Text>
                 </Pressable>
                 <Pressable style={styles.logLink}>
@@ -131,14 +148,12 @@ const styles = StyleSheet.create({
     },
     textButton: {
         color: "#FFFFFF",
-        fontSize: 16
     },
     logLink: {
         alignItems: "center"    
     },
     text: {
         color: "#1B4371",
-        fontSize: 16
     },
 });
   

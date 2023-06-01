@@ -5,7 +5,9 @@ import { useEffect, useState } from 'react';
 export default function LoginScreen() {
 
     const [focus, setFocus] = useState('')
-    const [keyboardStatus, setKeyboardStatus] = useState(false);
+    const [keyboardStatus, setKeyboardStatus] = useState(false)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
     useEffect(() => {
       const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -29,16 +31,29 @@ export default function LoginScreen() {
         setFocus('')
     }
 
+    const handleSubmit =()=> {
+        const userData = { email, password }
+        console.log(userData)
+    }
+
 
     return <View style={styles.container}>
             <Text style={styles.title}>Увійти</Text>
             <View style={styles.elseContainer}>
-                <TextInput style={focus === "email" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} name="email" placeholder='Адреса електронної пошти'
+                <TextInput style={focus === "email" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
+                    name="email" 
+                    placeholder='Адреса електронної пошти'
+                    value={email}
+                    onChangeText={setEmail}
                     onBlur={ () => onBlur() }
                     onFocus={ (e) => onFocus(e) }
                                             />
                 <View>
-                    <TextInput style={focus === "password" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} name="password" placeholder='Пароль'
+                    <TextInput style={focus === "password" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
+                        name="password" 
+                        placeholder='Пароль'
+                        value={password}
+                        onChangeText={setPassword}
                         onBlur={ () => onBlur() }
                         onFocus={ (e) => onFocus(e) }
                                                 />
@@ -48,7 +63,7 @@ export default function LoginScreen() {
                 </View>
             </View>
             {!keyboardStatus && <View style={styles.elseContainer}>
-                <Pressable style={styles.regButton}>
+                <Pressable style={styles.regButton} onPress={handleSubmit}>
                     <Text style={styles.textButton} >Увійти</Text>
                 </Pressable>
                 <Pressable style={styles.logLink}>
@@ -63,7 +78,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#FFFFFF",
         width: "100%",
-        paddingTop: 92,
+        paddingTop: 32,
         paddingBottom: 40,
         paddingHorizontal: 16,
         borderTopRightRadius: 25,
@@ -121,7 +136,6 @@ const styles = StyleSheet.create({
     },
     textButton: {
         color: "#FFFFFF",
-        fontSize: 16
     },
     logLink: {
         alignItems: "center",
@@ -131,11 +145,9 @@ const styles = StyleSheet.create({
     },
     text: {
         color: "#1B4371",
-        fontSize: 16,
     },
     textUnderline: {
         color: "#1B4371",
-        fontSize: 16,
         textDecorationLine: "underline"
     }
 });
