@@ -1,9 +1,13 @@
-import { StyleSheet, Text, TextInput, View, ImageBackground, Pressable, Image, Keyboard } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Pressable, Image, Keyboard, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import plus from "../images/plus.png"
 import { useEffect, useState } from 'react';
+import bgImg from "../images/bgImg.jpg"
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function RegistrationScreen() {
+
+    const navigation = useNavigation()
 
     const [focus, setFocus] = useState('')
     const [keyboardStatus, setKeyboardStatus] = useState(false);
@@ -36,58 +40,80 @@ export default function RegistrationScreen() {
     const handleSubmit =()=> {
         const userData = { login, email, password }
         console.log(userData)
+        navigation.navigate("Home")
     }
 
-    return <View style={styles.container}>
-        <View style={styles.avatar}>
-            <Pressable style={styles.avatarButton}>
-                <Image source={plus}></Image>
-            </Pressable>                
-        </View >
-            <Text style={styles.title}>Реєстрація</Text>
-            <View style={styles.elseContainer}>
-                <TextInput style={focus === "login" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
-                    name="login" placeholder='Логін'
-                    value={login}
-                    onChangeText={setLogin}
-                    onBlur={ () => onBlur() }
-                    onFocus={ (e) => onFocus(e) }
-                    />
-                <TextInput style={focus === "email" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
-                    name="email" 
-                    placeholder='Адреса електронної пошти'
-                    value={email}
-                    onChangeText={setEmail}
-                    onBlur={ () => onBlur() }
-                    onFocus={ (e) => onFocus(e) }
-                                            />
-                <View>
-                    <TextInput style={focus === "password" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
-                        name="password" 
-                        placeholder='Пароль'
-                        value={password}
-                        onChangeText={setPassword}
-                        onBlur={ () => onBlur() }
-                        onFocus={ (e) => onFocus(e) }
-                                                />
-                    <Pressable style={styles.passView}>
-                        <Text style={styles.text} >Показати</Text>
-                    </Pressable>
-                </View>
-            </View>
-            {!keyboardStatus && <View style={styles.elseContainer}>
-                <Pressable style={styles.regButton} onPress={handleSubmit}>
-                    <Text style={styles.textButton} >Зареєстуватися</Text>
-                </Pressable>
-                <Pressable style={styles.logLink}>
-                    <Text style={styles.text} >Вже є акаунт? Увійти</Text>
-                </Pressable>
-            </View>}
-    </View >
+    return <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <View style={styles.container}>
+        <ImageBackground source={bgImg} resizeMode="cover" style={styles.image}>
+    
+            <View style={styles.registrationContainer}>
+                <View style={styles.avatar}>
+                    <Pressable style={styles.avatarButton}>
+                        <Image source={plus}></Image>
+                    </Pressable>                
+                </View >
+                    <Text style={styles.title}>Реєстрація</Text>
+                    <View style={styles.elseContainer}>
+                        <TextInput style={focus === "login" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
+                            name="login" placeholder='Логін'
+                            value={login}
+                            onChangeText={setLogin}
+                            onBlur={ () => onBlur() }
+                            onFocus={ (e) => onFocus(e) }
+                            />
+                        <TextInput style={focus === "email" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
+                            name="email" 
+                            placeholder='Адреса електронної пошти'
+                            value={email}
+                            onChangeText={setEmail}
+                            onBlur={ () => onBlur() }
+                            onFocus={ (e) => onFocus(e) }
+                                                    />
+                        <View>
+                            <TextInput style={focus === "password" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
+                                name="password" 
+                                placeholder='Пароль'
+                                value={password}
+                                onChangeText={setPassword}
+                                onBlur={ () => onBlur() }
+                                onFocus={ (e) => onFocus(e) }
+                                                        />
+                            <Pressable style={styles.passView}>
+                                <Text style={styles.text} >Показати</Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                    {!keyboardStatus && <View style={styles.elseContainer}>
+                        <Pressable style={styles.regButton} onPress={handleSubmit}>
+                            <Text style={styles.textButton} >Зареєстуватися</Text>
+                        </Pressable>
+                        <View style={styles.bottomContainer}>
+                            <Text style={styles.text} >Вже є акаунт? </Text>
+                            <Pressable style={styles.logLink} onPress={() => navigation.navigate("Login")}>
+                                <Text style={styles.textUnderline} >Увійти</Text>
+                            </Pressable>
+                        </View>
+                    </View>}
+            </View >
+        </ImageBackground>
+    </View>
+  </TouchableWithoutFeedback>
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        alignItems: 'center',
+        fontSize: 16,
+    },
+    image: {
+        flex: 1,
+        width: "100%",
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    registrationContainer: {
         backgroundColor: "#FFFFFF",
         width: "100%",
         paddingTop: 92,
@@ -149,11 +175,16 @@ const styles = StyleSheet.create({
     textButton: {
         color: "#FFFFFF",
     },
-    logLink: {
-        alignItems: "center"    
+    bottomContainer: {
+        justifyContent: "center",
+        flexDirection: "row"    
     },
     text: {
         color: "#1B4371",
     },
+    textUnderline: {
+        color: "#1B4371",
+        textDecorationLine: "underline"
+    }
 });
   

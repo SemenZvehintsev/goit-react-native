@@ -1,31 +1,20 @@
-import { StyleSheet, ImageBackground, View, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import RegistrationScreen from './Screens/RegistrationScreen';
-import bgImg from "./images/bgImg.jpg"
-import LoginScreen from './Screens/LoginScreen';
+import 'react-native-gesture-handler';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
+import RegistrationScreen from './Screens/RegistrationScreen';
+import LoginScreen from './Screens/LoginScreen';
+import Home from './Screens/Home';
+
+
+const MainStack = createStackNavigator(); 
 
 export default function App() {
-  return <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    <View style={styles.container}>
-      <ImageBackground source={bgImg} resizeMode="cover" style={styles.image}>
-        <RegistrationScreen/>
-        {/* <LoginScreen/> */}
-      </ImageBackground>
-
-    </View>
-  </TouchableWithoutFeedback>
+  return <NavigationContainer>
+      <MainStack.Navigator initialRouteName="Registration">
+        <MainStack.Screen name="Registration" component={RegistrationScreen} options={{headerShown: false}} />
+        <MainStack.Screen name="Login" component={LoginScreen}  options={{headerShown: false}}/>
+        <MainStack.Screen name="Home" component={Home}  options={{headerShown: false}}/>
+      </MainStack.Navigator>
+    </NavigationContainer>
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    fontSize: 16,
-},
-image: {
-    flex: 1,
-    width: "100%",
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-},
-});

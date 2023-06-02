@@ -1,8 +1,12 @@
-import { StyleSheet, Text, TextInput, View, ImageBackground, Pressable, Image, Keyboard } from 'react-native';
+import { StyleSheet, Text, TextInput, View, ImageBackground, Pressable, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useEffect, useState } from 'react';
+import bgImg from "../images/bgImg.jpg"
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function LoginScreen() {
+
+    const navigation = useNavigation()
 
     const [focus, setFocus] = useState('')
     const [keyboardStatus, setKeyboardStatus] = useState(false)
@@ -34,48 +38,69 @@ export default function LoginScreen() {
     const handleSubmit =()=> {
         const userData = { email, password }
         console.log(userData)
+        navigation.navigate("Home")
     }
 
 
-    return <View style={styles.container}>
-            <Text style={styles.title}>Увійти</Text>
-            <View style={styles.elseContainer}>
-                <TextInput style={focus === "email" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
-                    name="email" 
-                    placeholder='Адреса електронної пошти'
-                    value={email}
-                    onChangeText={setEmail}
-                    onBlur={ () => onBlur() }
-                    onFocus={ (e) => onFocus(e) }
-                                            />
-                <View>
-                    <TextInput style={focus === "password" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
-                        name="password" 
-                        placeholder='Пароль'
-                        value={password}
-                        onChangeText={setPassword}
-                        onBlur={ () => onBlur() }
-                        onFocus={ (e) => onFocus(e) }
-                                                />
-                    <Pressable style={styles.passView}>
-                        <Text style={styles.text} >Показати</Text>
-                    </Pressable>
-                </View>
-            </View>
-            {!keyboardStatus && <View style={styles.elseContainer}>
-                <Pressable style={styles.regButton} onPress={handleSubmit}>
-                    <Text style={styles.textButton} >Увійти</Text>
-                </Pressable>
-                <Pressable style={styles.logLink}>
-                    <Text style={styles.text} >Немає акаунту? </Text>
-                    <Text style={styles.textUnderline} >Зареєструватися</Text>
-                </Pressable>
-            </View>}
-    </View >
+    return <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+            <ImageBackground source={bgImg} resizeMode="cover" style={styles.image}>
+    
+            <View style={styles.loginContainer}>
+                    <Text style={styles.title}>Увійти</Text>
+                    <View style={styles.elseContainer}>
+                        <TextInput style={focus === "email" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
+                            name="email" 
+                            placeholder='Адреса електронної пошти'
+                            value={email}
+                            onChangeText={setEmail}
+                            onBlur={ () => onBlur() }
+                            onFocus={ (e) => onFocus(e) }
+                                                    />
+                        <View>
+                            <TextInput style={focus === "password" ? [styles.textInput, {borderColor: "#FF6C00"}] : styles.textInput} 
+                                name="password" 
+                                placeholder='Пароль'
+                                value={password}
+                                onChangeText={setPassword}
+                                onBlur={ () => onBlur() }
+                                onFocus={ (e) => onFocus(e) }
+                                                        />
+                            <Pressable style={styles.passView}>
+                                <Text style={styles.text} >Показати</Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                    {!keyboardStatus && <View style={styles.elseContainer}>
+                        <Pressable style={styles.regButton} onPress={handleSubmit}>
+                            <Text style={styles.textButton} >Увійти</Text>
+                        </Pressable>
+                        <View style={styles.bottomContainer}>
+                            <Text style={styles.text} >Немає акаунту? </Text>
+                            <Pressable style={styles.logLink} onPress={() => navigation.navigate("Registration")}>
+                                <Text style={styles.textUnderline} >Зареєструватися</Text>
+                            </Pressable>
+                        </View>
+                    </View>}
+            </View >
+      </ImageBackground>
+    </View>
+  </TouchableWithoutFeedback>
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        alignItems: 'center',
+        fontSize: 16,
+    },
+    image: {
+        flex: 1,
+        width: "100%",
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    loginContainer: {
         backgroundColor: "#FFFFFF",
         width: "100%",
         paddingTop: 32,
@@ -137,11 +162,9 @@ const styles = StyleSheet.create({
     textButton: {
         color: "#FFFFFF",
     },
-    logLink: {
-        alignItems: "center",
-        justifyContent: 'center',
-        display: "flex",
-        flexDirection: "row"
+    bottomContainer: {
+        justifyContent: "center",
+        flexDirection: "row"    
     },
     text: {
         color: "#1B4371",
